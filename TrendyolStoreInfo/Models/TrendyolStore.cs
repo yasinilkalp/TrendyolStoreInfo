@@ -3,10 +3,11 @@
     public class TrendyolStore
     {
 
-        public TrendyolStore(string sellerId, string storeName, string score, string location, string productCount, string deliveryTimeToCargo, string questionAnswerRate)
+        public TrendyolStore(string sellerId, string storeName, string storeImage, string score, string location, string productCount, string deliveryTimeToCargo, string questionAnswerRate)
         {
             SellerId = sellerId;
             StoreName = storeName;
+            StoreImage = storeImage;
             Score = score;
             Location = location;
             ProductCount = productCount;
@@ -15,7 +16,8 @@
         }
 
         public string SellerId { get; set; }
-        public string StoreName { get; set; }
+        public string StoreName { get; set; } 
+        public string StoreImage { get; set; }
         public string Score { get; set; }
         public string Location { get; set; }
         public string ProductCount { get; set; }

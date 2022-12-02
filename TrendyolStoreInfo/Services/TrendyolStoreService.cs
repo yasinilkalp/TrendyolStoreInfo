@@ -33,13 +33,14 @@ namespace TrendyolStoreInfo.Services
         {
             await page.GotoAsync("https://www.trendyol.com/magaza/profil/x-m-" + SellerId);
             string StoreName = await GetLocator(page, ".seller-store__name");
+            string StoreIcon = await page.Locator(".seller-icon").GetAttributeAsync("src");
             string Score = await GetLocator(page, ".score-actual");
             string Location = await GetLocator(page, ".seller-info-container__wrapper__text-container__value>>nth=1");
             string ProductCount = await GetLocator(page, ".seller-info-container__wrapper__text-container__value>>nth=2");
             string DeliveryTimeToCargo = await GetLocator(page, ".seller-metrics-container__wrapper>>nth=0");
             string QuestionAnswerRate = await GetLocator(page, ".seller-metrics-container__wrapper>>nth=1");
 
-            TrendyolStore response = new(SellerId, StoreName, Score, Location, ProductCount,
+            TrendyolStore response = new(SellerId, StoreName, StoreIcon, Score, Location, ProductCount,
                 DeliveryTimeToCargo.Replace("Kargoya Teslim Süresi\n", ""),
                 QuestionAnswerRate.Replace("Soru Cevaplama Oranı\n", ""));
 
