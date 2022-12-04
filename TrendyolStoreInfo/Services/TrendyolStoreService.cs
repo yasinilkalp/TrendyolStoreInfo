@@ -43,7 +43,8 @@ namespace TrendyolStoreInfo.Services
 
             TrendyolStore response = new(SellerId, StoreName, StoreIcon, Score, RegisterTime, Location, ProductCount,
                 DeliveryTimeToCargo.Replace("Kargoya Teslim Süresi\n", ""),
-                QuestionAnswerRate.Replace("Soru Cevaplama Oranı\n", ""));
+                QuestionAnswerRate.Replace("Soru Cevaplama Oranı\n", ""),
+                "https://www.trendyol.com/magaza/x-m-" + SellerId);
 
             return response;
         }
