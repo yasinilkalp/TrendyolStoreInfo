@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<PackageId>Ledbim.TrendyolStoreInfo</PackageId>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<Authors>Yasin ilkalp Arabacı</Authors>
 		<Company>Ledbim</Company>
 		<Description>Trendyol Mağaza bilgilerini Web Scraping ile okuyup modellediğimiz bir kütüphanedir.</Description>
