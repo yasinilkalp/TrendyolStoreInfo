@@ -42,7 +42,7 @@ namespace TrendyolStoreInfo.Services
             string QuestionAnswerRate = await GetLocator(page, ".seller-metrics-container__wrapper>>nth=1");
 
             TrendyolStore response = new(SellerId, StoreName, StoreIcon, Score, RegisterTime, Location, ProductCount,
-                DeliveryTimeToCargo.Replace("Kargoya Teslim Süresi\n", ""),
+                DeliveryTimeToCargo.Replace("Kargoya Teslim Süresi\n", "").Replace("Ortalama Kargolama Süresi\n", ""),
                 QuestionAnswerRate.Replace("Soru Cevaplama Oranı\n", ""),
                 "https://www.trendyol.com/magaza/x-m-" + SellerId);
 
