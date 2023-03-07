@@ -7,7 +7,7 @@ namespace TrendyolStoreInfo
     {
         public static IServiceCollection AddTrendyolStoreService(this IServiceCollection services)
         { 
-            services.AddScoped<ITrendyolStoreService, TrendyolStoreService>();
+            services.AddScoped<ITrendyolScrapingService, TrendyolScrapingService>();
 
             return services;
         }
