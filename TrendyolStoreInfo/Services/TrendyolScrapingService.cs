@@ -63,7 +63,7 @@ namespace TrendyolStoreInfo.Services
         public async Task<IEnumerable<TrendyolCommission>> GetCommissions(string Email, string Password)
         {
             using IPlaywright playwright = await Playwright.CreateAsync();
-            await using IBrowser browser = await playwright.Chromium.LaunchAsync(new() { Headless = false });
+            await using IBrowser browser = await playwright.Chromium.LaunchAsync();
             IPage page = await browser.NewPageAsync();
 
             await LoginTrendyol(page, Email, Password);
