@@ -18,5 +18,11 @@ namespace TrendyolStoreInfo.Services
         Task<IEnumerable<TrendyolCommission>> GetCommissions(string Email, string Password);
 
         #endregion
+
+        #region Trendyol Claim Reasons
+
+        Task<IEnumerable<TrendyolClaimReason>> GetClaimReasons();
+
+        #endregion
     }
 }

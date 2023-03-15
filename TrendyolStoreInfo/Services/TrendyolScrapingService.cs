@@ -1,5 +1,8 @@
 ﻿using Microsoft.Playwright;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using TrendyolStoreInfo.Models;
 
@@ -63,12 +66,14 @@ namespace TrendyolStoreInfo.Services
         public async Task<IEnumerable<TrendyolCommission>> GetCommissions(string Email, string Password)
         {
             using IPlaywright playwright = await Playwright.CreateAsync();
-            await using IBrowser browser = await playwright.Chromium.LaunchAsync();
+            await using IBrowser browser = await playwright.Chromium.LaunchAsync(new() { Headless = true });
             IPage page = await browser.NewPageAsync();
 
-            await LoginTrendyol(page, Email, Password);
-
-            await page.GotoAsync("https://partner.trendyol.com/incentive");
+            bool IsLogin = false;
+            while (!IsLogin)
+            {
+                IsLogin = await LoginTrendyol(page, Email, Password);
+            }
 
             await page.SelectOptionAsync("div.change-size select", "50");
 
@@ -85,13 +90,19 @@ namespace TrendyolStoreInfo.Services
             return data;
         }
 
-        private async Task LoginTrendyol(IPage page, string Email, string Password)
+        private async Task<bool> LoginTrendyol(IPage page, string Email, string Password)
         {
             await page.GotoAsync("https://partner.trendyol.com/account/login");
             await page.Locator("div.email-phone input").FillAsync(Email);
             await page.Locator("div.password input").FillAsync(Password);
             await page.Locator("button[type=submit]").ClickAsync();
-            await Task.Delay(2000);
+            await Task.Delay(3000);
+
+            string reCaptchaUrl = page.Frames.FirstOrDefault(a => a.Url.Contains("recaptcha"))?.Url ?? "";
+
+            await page.GotoAsync("https://partner.trendyol.com/incentive");
+
+            return page.Url == "https://partner.trendyol.com/incentive";
         }
 
         private async Task<List<TrendyolCommission>> ReadTable(IPage page)
@@ -131,6 +142,35 @@ namespace TrendyolStoreInfo.Services
             {
                 return false;
             }
+        }
+
+        #endregion
+
+        #region Trendyol Claim Reasons
+
+        public async Task<IEnumerable<TrendyolClaimReason>> GetClaimReasons()
+        {
+            using IPlaywright playwright = await Playwright.CreateAsync();
+            await using IBrowser browser = await playwright.Chromium.LaunchAsync(new() { Headless = true });
+            IPage page = await browser.NewPageAsync();
+
+            await page.GotoAsync("https://developers.trendyol.com/docs/marketplace/iade-entegrasyonu/iade-sebepleri");
+
+
+            var data = new List<TrendyolClaimReason>();
+            int rowCount = await page.Locator("table tbody tr").CountAsync();
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                var td = page.Locator("table tbody tr").Nth(i).Locator("td");
+                data.Add(new()
+                {
+                    Id = await td.Nth(0).InnerTextAsync(),
+                    Description = await td.Nth(1).InnerTextAsync(),
+                    ClaimType = await td.Nth(2).InnerTextAsync(),
+                });
+            } 
+            return data;
         }
 
         #endregion
