@@ -24,5 +24,11 @@ namespace TrendyolStoreInfo.Services
         Task<IEnumerable<TrendyolClaimReason>> GetClaimReasons();
 
         #endregion
+
+        #region Trendyol Cargo Providers
+
+        Task<IEnumerable<TrendyolCargoProvider>> GetCargoProviders();
+
+        #endregion
     }
 }

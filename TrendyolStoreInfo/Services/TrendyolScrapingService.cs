@@ -169,7 +169,37 @@ namespace TrendyolStoreInfo.Services
                     Description = await td.Nth(1).InnerTextAsync(),
                     ClaimType = await td.Nth(2).InnerTextAsync(),
                 });
-            } 
+            }
+            return data;
+        }
+
+        #endregion
+
+        #region Trendyol Cargo Providers
+
+        public async Task<IEnumerable<TrendyolCargoProvider>> GetCargoProviders()
+        {
+            using IPlaywright playwright = await Playwright.CreateAsync();
+            await using IBrowser browser = await playwright.Chromium.LaunchAsync(new() { Headless = true });
+            IPage page = await browser.NewPageAsync();
+
+            await page.GotoAsync("https://developers.trendyol.com/docs/marketplace/urun-entegrasyonu/trendyol-kargo-sirketleri-listesi");
+
+
+            var data = new List<TrendyolCargoProvider>();
+            int rowCount = await page.Locator("table tbody tr").CountAsync();
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                var td = page.Locator("table tbody tr").Nth(i).Locator("td");
+                data.Add(new()
+                {
+                    Id = int.Parse(await td.Nth(0).InnerTextAsync()),
+                    Code = await td.Nth(1).InnerTextAsync(),
+                    Name = await td.Nth(2).InnerTextAsync(),
+                    TaxNumber = await td.Nth(3).InnerTextAsync(),
+                });
+            }
             return data;
         }
 
